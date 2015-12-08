@@ -1,0 +1,97 @@
+  1. a method that returns the sum of two integers
+  
+  Casual:
+  
+  Ask the user for the first integer.
+  save the integer in a variable called integer1.
+
+  Ask the user for the second integer.
+  Save the integer in a variable called integer2.
+
+  Add integer1 to integer2 and store in a variable called result.
+
+  Print out the result.
+
+  
+  Formal:
+  
+  START
+
+  PRINT "This program returns the sum of two integers."
+  
+  PRINT "Please enter the first integer."
+  SET intger1 = user input
+
+  PRINT "Please enter the second integer."
+  SET intger2 = user input
+
+  result = integer1 + integer2
+
+  PRINT "The sum of the two integers is :" result
+
+  END
+
+  2. a method that takes an array of strings, and returns a string that is all those strings concatenated together
+
+  Casual:
+
+  Accept an array of strings by loading the values into a string variable called strings.
+    -Iterate through the array and extract the first string in the array.
+      -Append each string in the array to the newly created strings variable.
+      -After iterating through the collection, print out the string.
+
+  Formal:
+
+  START
+
+  # Given an array of strings called "array"
+
+  SET iterator = length of the array
+  SET strings = " "
+
+  WHILE the iterator > 1
+    SET strings = strings + next string from the array 
+
+    iterator = iterator - 1
+
+    PRINT string
+
+  END
+
+  3. a method that takes an array of integers, and returns a new array with every other element
+
+  Casual:
+
+  Given an array of integers.
+
+    Iterate through the array.
+      -Assign the next integer to a new array called array{n}, where n is the index of the integer in the array.
+      -Skip an array by adding 1 to the index of the next integer in the array.
+
+  Formal:
+
+  START
+  
+  #Given an array of integers called integerarray.
+
+  SET iterator = length of array
+  
+  WHILE iterator > 0
+
+  SET n = index of the next array
+  SET array{n} = next integer in array
+
+  END
+
+  
+
+
+
+
+
+
+      
+
+
+
+
