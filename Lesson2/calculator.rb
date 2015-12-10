@@ -11,6 +11,19 @@ def valid_number?(num)
   num.to_i() != 0
 end
 
+def operator_to_message(op)
+  case op
+  when '1'  
+    "Adding"
+  when '2' 
+   "Subtracting"
+  when '3' 
+   "Multiplying"
+  when '4' 
+   "Dividing"
+ end
+end
+
 prompt("Welcome to Calculator! Enter you name: ")
 
 name = ''
@@ -22,17 +35,16 @@ name = Kernel.gets().chomp()
   else
     break
   end
-
 end
 
+prompt("Hello #{name}!")
 
 loop do
 
-  number1 = ''
+  # number1 = ''
+  prompt("What's the first number?")
+  number1 = Kernel.gets().chomp()  
   loop do 
-    prompt("What's the first number?")
-    number1 = Kernel.gets().chomp()  
-
     if valid_number?(number1)
       break
     else
@@ -43,22 +55,41 @@ loop do
   #Kernel.puts(number1.inspect)
   #Kernel.puts("The number is: " + number1 + "!")
 
-  number2 = ''
-  loop  do
+  # number2 = ''
   prompt("What's the second number?")
   number2 = Kernel.gets().chomp()
-
+  loop  do
   if valid_number?(number2)
       break
     else
       prompt("Hmm..that doesn't look like a valid number. Please try again.")
     end
-
   end
 
 
-  prompt("What operation would you like to perform? 1) add 2) subtract 3) multiply 4) divide")
+  # prompt("What operation would you like to perform? 1) add 2) subtract 3) multiply 4) divide")
+  operator_prompt = <<-MSG
+  What operation would you like to perform?
+      1) add
+      2) subtract
+      3) multiply
+      4) divide
+  MSG
+
+  prompt(operator_prompt)
   operator = Kernel.gets().chomp()
+
+  loop  do
+    if %w(1 2 3 4).include?(operator)
+      break
+    else prompt("Must choose 1,2,3, or 4")
+      end
+  end
+
+  
+
+
+  
 
 # if operator == '1'
 #   result = number1.to_i() + number2.to_i()
@@ -85,6 +116,8 @@ loop do
 
 
 # Kernel.puts(result)
+
+prompt("#{operator_to_message(operator)} the two numbers...")
 
 prompt("The result is: #{result}")
 
