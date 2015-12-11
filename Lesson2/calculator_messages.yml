@@ -1,0 +1,38 @@
+# calculator_messages.yml
+# reorganizing the calculator_messages.yml
+
+en:
+welcome: "Welcome to Calculator! Enter your name:"
+valid_name: "Make sure to use a valid name."
+number_1: "What's the first number?"
+number_2: "What's the second number?"
+valid_number: "Hmm..that doesn't look like a valid number. Please try again."
+operators: "Must choose 1,2,3, or 4"
+continue: "Do you want to perform another operation? (Y/N)"
+Thank_you: "Thank you for using the calculator!"
+operator_prompt: "What operation would you like to perform?\n 1) add \n 2) subtract \n 3) multiply \n 4) divide"
+calc_status: "...the two numbers."
+result: "The result is: "
+add: "Adding"
+subtract: "Subtracting"
+multiply: "Multiplying"
+divide: "Dividing"
+hello: "Hello "
+# es:
+# welcome: "Bienvenido a la calculadora ! Introduzca su nombre:"
+# valid_name: "Asegúrese de utilizar un nombre válido ."
+# number_1: "¿Cuál es el primer número ?"
+# number_2: "¿Cuál es el segundo número?"
+# valid_number: "Hmm..that no se ve como un número válido . Por favor, vuelva a intentarlo ."
+# operators: "Debe elegir 1,2,3 , o 4"
+# continue: "¿Quieres realizar otra operación ? ( S / N)"
+# Thank_you: "Gracias por usar la calculadora usted!"
+# operator_prompt: "¿Qué operación le gustaría realizar ?\n 1 ) añadir \n 2 ) restar \n 3 ) multiplicar \n 4 ) se dividen"
+# calc_status: "...los dos números."
+# result: "El resultado es: "
+# add: "Adición"
+# subtract: "restando"
+# multiply: "multiplicando"
+# divide: "Divisor"
+# hello: "Hola "
+
