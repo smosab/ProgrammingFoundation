@@ -7,6 +7,12 @@ require 'yaml'
 MESSAGES = YAML.load_file('calculator_messages.yml')
 # puts MESSAGES.inspect
 
+LANGUAGE = 'en'
+
+def messages(message, lang='en')
+  MESSAGES[lang][message]
+end
+
 def prompt(message)
   Kernel.puts("=> #{message}")
 end
@@ -31,63 +37,64 @@ end
 def operator_to_message(op)
   case op
   when '1'
-    MESSAGES['add']
+    messages('add', LANGUAGE)
+    # MESSAGES['add']
   when '2'
-    MESSAGES['subtract']
+    messages('subtract', LANGUAGE)
   when '3'
-    MESSAGES['multiply']
+    messages('multiply', LANGUAGE)
   when '4'
-    MESSAGES['divide']
+    messages('divide', LANGUAGE)
   end
 end
 
-prompt(MESSAGES['welcome'])
+prompt(messages('welcome', LANGUAGE))
 
 name = ''
 loop do
   name = Kernel.gets().chomp()
   if name.empty?()
-    prompt(MESSAGES['valid_name'])
+    prompt(messages('valid_name', LANGUAGE))
   else
     break
   end
 end
 
-prompt(MESSAGES['hello'])
+prompt(messages('hello', LANGUAGE))
 prompt("#{name}!")
 
 loop do
   number1 = ''
   loop do
-    prompt(MESSAGES['number_1'])
+    prompt(messages('number_1', LANGUAGE))
     number1 = Kernel.gets().chomp()
     if number?(number1)
       break
     else
-      prompt(MESSAGES['valid_number'])
+      prompt(messages('valid_number', LANGUAGE))
     end
   end
 
   number2 = ''
   loop do
-    prompt(MESSAGES['number_2'])
+    prompt(messages('number_2', LANGUAGE))
     number2 = Kernel.gets().chomp()
     if number?(number2)
       break
     else
-      prompt(MESSAGES['valid_number'])
+      prompt(messages('valid_number', LANGUAGE))
     end
   end
 
   operator = ''
   loop do
-    prompt(MESSAGES['operator_prompt'])
+    prompt(messages('operator_prompt', LANGUAGE))
     # prompt(operator_prompt)
     operator = Kernel.gets().chomp()
     if %w(1 2 3 4).include?(operator)
       break
     else
-      prompt(MESSAGES['operators'])
+      prompt(messages('operators', LANGUAGE))
     end
   end
 
@@ -106,13 +113,13 @@ loop do
   prompt("#{operator_to_message(operator)}...")
   puts MESSAGES['calc_status']
   # prompt()
-  prompt(MESSAGES['result'])
+  prompt(messages('result', LANGUAGE))
   prompt("#{result}")
 
-  prompt(MESSAGES['continue'])
+  prompt(messages('continue', LANGUAGE))
   answer = Kernel.gets().chomp()
 
   break unless answer.upcase().start_with?('Y')
 end
 
-prompt(MESSAGES['Thank_you'])
+prompt(messages('Thank_you', LANGUAGE))
