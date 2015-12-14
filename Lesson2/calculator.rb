@@ -38,7 +38,6 @@ def operator_to_message(op)
   case op
   when '1'
     messages('add', LANGUAGE)
-    # MESSAGES['add']
   when '2'
     messages('subtract', LANGUAGE)
   when '3'
@@ -64,6 +63,7 @@ prompt(messages('hello', LANGUAGE))
 prompt("#{name}!")
 
 loop do
+
   number1 = ''
   loop do
     prompt(messages('number_1', LANGUAGE))
@@ -89,7 +89,6 @@ loop do
   operator = ''
   loop do
     prompt(messages('operator_prompt', LANGUAGE))
-    # prompt(operator_prompt)
     operator = Kernel.gets().chomp()
     if %w(1 2 3 4).include?(operator)
       break
@@ -101,7 +100,6 @@ loop do
   result =  case operator
             when '1'
               number1.to_f() + number2.to_f()
-              # number1.to_i() + number2.to_i()
             when '2'
               number1.to_f() - number2.to_f()
             when '3'
@@ -112,7 +110,6 @@ loop do
 
   prompt("#{operator_to_message(operator)}...")
   puts MESSAGES['calc_status']
-  # prompt()
   prompt(messages('result', LANGUAGE))
   prompt("#{result}")
 
