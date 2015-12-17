@@ -12,7 +12,7 @@ loop do
   def display_result(player, computer)
     if win?(player, computer)
       prompt("You won!")
-    elsif win?(player, computer)
+    elsif win?(computer, player)
       prompt("Computer won!")
     else prompt("It's a tie!")
     end
