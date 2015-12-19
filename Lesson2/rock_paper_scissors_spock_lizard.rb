@@ -1,10 +1,9 @@
-# Rock Paper Scissors Spock Lizard# Rock Paper Scissors
+# Rock Paper Scissors Spock Lizard
+
 require 'pry'
-# VALID_CHOICES = %w(rock paper scissors spock lizard)
 VALID_CHOICES = %w(rock paper scissors spock lizard)
 
 def win?(first, second)
-
   (first == 'scissors' && second == 'paper') ||
     (first == 'paper' && second == 'rock') ||
     (first == 'rock' && second == 'lizard') ||
@@ -17,76 +16,78 @@ def win?(first, second)
     (first == 'rock' && second == 'scissors')
 end
 
+player_score = 0
+computer_score = 0
+
+puts "Welcome to Rock Paper Scissors Spock Lizard! First to score 5 wins!"
 loop do # main loop
 
   def display_result(player, computer)
     if win?(player, computer)
-      prompt("You won!")
+      prompt("You won this round!")
     elsif win?(computer, player)
-      prompt("Computer won!")
+      prompt("The Computer won this round!")
     else prompt("It's a tie!")
     end
   end
-
-  # def test_method
-  #   prompt('test message')
-  # end
-  # test_method
 
   def prompt(message)
     Kernel.puts("=> #{message}")
   end
 
-  # choice = ''
+  prompt("Your score: #{player_score}")
+  prompt("The computer's score: #{computer_score}")
 
-
-
-
-    # VALID_CHOICES.each do |c|
-    #   if  choice[0] != c[0]
-    #   then prompt("That's not a valid choice")
-    #     else
-    #   end
   choice = ''
   loop do
     prompt("Choose one (first letter ok): #{VALID_CHOICES.join(', ')}")
     choice = Kernel.gets().chomp()
-    if VALID_CHOICES.none? {|word| word[0] == choice[0]}
-        prompt("That's not a valid choice")
-      elsif (choice == 's')
-        prompt("1 for Spock or 2 for scissors")
-        choice = Kernel.gets().chomp()
-        # binding.pry
-      else
-    end
-    choice = case choice
-    when '1'
-      then 'scissors'
-    when '2'
-      then 'spock'
-    when 'r'
-      then 'rock'
-    when 'p'
-      then 'paper'
-    when 'l'
-      then 'lizard'
-    end
+   if VALID_CHOICES.none? {|word| word[0] == choice[0]}
+    prompt("That's not a valid choice")
+  else
     break
+    end
   end
 
 
-
+  if (choice == 's')
+        prompt("1 for Spock or 2 for scissors")
+        choice = Kernel.gets().chomp()
+  end
+    choice = case choice
+              when '2'
+                then 'scissors'
+              when '1'
+                then 'spock'
+              when 'r'
+                then 'rock'
+              when 'p'
+                then 'paper'
+              when 'l'
+                then 'lizard'
+              end
 
   computer_choice = VALID_CHOICES.sample
 
-  Kernel.puts("You chose #{choice} the computer chose #{computer_choice}")
+  Kernel.puts("You chose #{choice}, the computer chose #{computer_choice}")
 
   display_result(choice, computer_choice)
 
-  prompt("Do you want to play again?(y/n)")
-  answer = Kernel.gets().chomp()
+  computerwins = win?(choice, computer_choice)
+  playerwins = win?(computer_choice, choice)
 
-  break unless answer.downcase().start_with?('y')
+  if computerwins == true
+    player_score += 1
+  elsif playerwins == true
+    computer_score += 1
+  end
+
+  if player_score == 5
+    prompt("You won the game!")
+  elsif computer_score == 5
+    prompt("The computer won!")
+  end
+  break if player_score == 5 || computer_score == 5
 
   # My version:
   # loop do
@@ -116,4 +117,5 @@ loop do # main loop
   #   play_again = Kernel.gets().chomp()
 
   #   break if play_again.upcase == 'N'
+
 end # main loop end
