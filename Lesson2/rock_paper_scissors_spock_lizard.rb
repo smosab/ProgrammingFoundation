@@ -1,5 +1,5 @@
 # Rock Paper Scissors Spock Lizard# Rock Paper Scissors
-
+require 'pry'
 # VALID_CHOICES = %w(rock paper scissors spock lizard)
 VALID_CHOICES = %w(rock paper scissors spock lizard)
 
@@ -52,18 +52,27 @@ loop do # main loop
     prompt("Choose one (first letter ok): #{VALID_CHOICES.join(', ')}")
     choice = Kernel.gets().chomp()
     if VALID_CHOICES.none? {|word| word[0] == choice[0]}
-      prompt("That's not a valid choice")
-    else
-      break
+        prompt("That's not a valid choice")
+      elsif (choice == 's')
+        prompt("1 for Spock or 2 for scissors")
+        choice = Kernel.gets().chomp()
+        # binding.pry
+      else
     end
+    choice = case choice
+    when '1'
+      then 'scissors'
+    when '2'
+      then 'spock'
+    when 'r'
+      then 'rock'
+    when 'p'
+      then 'paper'
+    when 'l'
+      then 'lizard'
+    end
+    break
   end
-
-  # if (choice == 's')
-  #     prompt("1 for Spock or 2 for scissors")
-  #     choice = Kernel.gets().chomp()
-  #     break
-  #     else
-
 
 
 
