@@ -1,6 +1,6 @@
 # Rock Paper Scissors Spock Lizard
 
-require 'pry'
+# require 'pry'
 VALID_CHOICES = %w(rock paper scissors spock lizard)
 
 def win?(first, second)
