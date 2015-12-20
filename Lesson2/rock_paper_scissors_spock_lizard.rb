@@ -21,12 +21,11 @@ computer_score = 0
 
 puts "Welcome to Rock Paper Scissors Spock Lizard! First to score 5 wins!"
 loop do # main loop
-
   def display_result(player, computer)
     if win?(player, computer)
-      prompt("You won this round!")
+      prompt("You won this round...")
     elsif win?(computer, player)
-      prompt("The Computer won this round!")
+      prompt("The Computer won this round...")
     else prompt("It's a tie!")
     end
   end
@@ -40,32 +39,28 @@ loop do # main loop
 
   choice = ''
   loop do
-    prompt("Choose one (first letter ok): #{VALID_CHOICES.join(', ')}")
+    # prompt("Choose one (first letter ok): #{VALID_CHOICES.join(', ')}")
+    prompt("Choose one (r)ock (p)aper (sc)issors (s)pock (l)izard")
     choice = Kernel.gets().chomp()
-   if VALID_CHOICES.none? {|word| word[0] == choice[0]}
-    prompt("That's not a valid choice")
-  else
-    break
+    if VALID_CHOICES.none? { |word| word[0] == choice || 'sc' == choice }
+      prompt("That's not a valid choice")
+    else
+      break
     end
   end
 
-
-  if (choice == 's')
-        prompt("1 for Spock or 2 for scissors")
-        choice = Kernel.gets().chomp()
-  end
-    choice = case choice
-              when '2'
-                then 'scissors'
-              when '1'
-                then 'spock'
-              when 'r'
-                then 'rock'
-              when 'p'
-                then 'paper'
-              when 'l'
-                then 'lizard'
-              end
+  choice = case choice
+           when 'sc'
+            then 'scissors'
+           when 's'
+            then 'spock'
+           when 'r'
+            then 'rock'
+           when 'p'
+            then 'paper'
+           when 'l'
+            then 'lizard'
+           end
 
   computer_choice = VALID_CHOICES.sample
 
@@ -85,37 +80,7 @@ loop do # main loop
   if player_score == 5
     prompt("You won the game!")
   elsif computer_score == 5
-    prompt("The computer won!")
+    prompt("The computer won the game!")
   end
   break if player_score == 5 || computer_score == 5
-
-  # My version:
-  # loop do
-
-  #   prompt("Choose one: rock, paper, scissors")
-
-  #   choice = Kernel.gets().chomp()
-  #   choices = %w(rock paper scissors)
-  #   computer_choice = choices.shuffle[1]
-
-  #   prompt("The computer's choice is #{computer_choice}")
-
-  #   if (choice == 'rock' and computer_choice == 'rock') then prompt("Tie!")
-  #   elsif (choice =='paper' and computer_choice == 'rock') then prompt("You win!")
-  #   elsif (choice == 'scissors' and computer_choice == 'rock') then prompt("You lose!")
-
-  #   elsif (choice =='rock' and computer_choice == 'paper') then prompt("You lose!")
-  #   elsif (choice =='paper' and computer_choice == 'paper') then prompt("Tie!")
-  #   elsif (choice =='scissors' and computer_choice == 'paper') then prompt("You win!")
-
-  #   elsif (choice =='rock' and computer_choice == 'scissors') then prompt("You win!")
-  #   elsif (choice =='paper' and computer_choice == 'scissors') then prompt("You lose!")
-  #   elsif (choice =='scissors' and computer_choice == 'scissors') then prompt("Tie")
-  #   end
-
-  #   prompt("Play again?(y/n)")
-  #   play_again = Kernel.gets().chomp()
-
-  #   break if play_again.upcase == 'N'
-
 end # main loop end
