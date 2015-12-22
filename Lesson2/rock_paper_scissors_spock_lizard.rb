@@ -51,15 +51,15 @@ loop do # main loop
 
   choice = case choice
            when 'sc'
-            then 'scissors'
+            'scissors'
            when 's'
-            then 'spock'
+            'spock'
            when 'r'
-            then 'rock'
+            'rock'
            when 'p'
-            then 'paper'
+            'paper'
            when 'l'
-            then 'lizard'
+            'lizard'
            end
 
   computer_choice = VALID_CHOICES.sample
@@ -68,12 +68,12 @@ loop do # main loop
 
   display_result(choice, computer_choice)
 
-  computerwins = win?(choice, computer_choice)
-  playerwins = win?(computer_choice, choice)
+  computer_wins = win?(choice, computer_choice)
+  player_wins = win?(computer_choice, choice)
 
-  if computerwins == true
+  if computer_wins == true
     player_score += 1
-  elsif playerwins == true
+  elsif player_wins == true
     computer_score += 1
   end
 
