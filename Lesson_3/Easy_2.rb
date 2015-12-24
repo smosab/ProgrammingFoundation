@@ -69,3 +69,62 @@ loop do
   x += 1
 end
 
+Question 5
+
+We have most of the Munster family in our age hash:
+
+ages = { "Herman" => 32, "Lily" => 30, "Grandpa" => 5843, "Eddie" => 10 }
+add ages for Marilyn and Spot to the existing hash
+
+additional_ages = { "Marilyn" => 22, "Spot" => 237 }
+
+Solution 5
+[5] pry(main)> ages.merge(additional_ages)
+=> {"Herman"=>32, "Lily"=>30, "Grandpa"=>5843, "Eddie"=>10, "Marilyn"=>22, "Spot"=>237}
+
+Question 6
+
+Pick out the minimum age from our current Munster family hash:
+
+ages = { "Herman" => 32, "Lily" => 30, "Grandpa" => 5843, "Eddie" => 10, "Marilyn" => 22, "Spot" => 237 }
+
+Solution 6
+
+[9] pry(main)> ages.values.min
+=> 10
+
+Question 7
+
+See if the name "Dino" appears in the string below:
+
+advice = "Few things in life are as important as house training your pet dinosaur."
+
+Solution 7
+
+[18] pry(main)> advice.include?("Dino")
+=> false
+
+Question 8
+
+In the array:
+
+flintstones = %w(Fred Barney Wilma Betty BamBam Pebbles)
+Find the index of the first name that starts with "Be"
+
+Solution 8
+
+flintstones.find_index{|name| name.include?("Be")}
+
+Question 9
+
+Using array#map!, shorten each of these names to just 3 characters:
+
+flintstones = %w(Fred Barney Wilma Betty BamBam Pebbles)
+
+Solution 9
+
+[69] pry(main)> flintstones.map {|name| name.slice(0..2)}
+=> ["Fre", "Bar", "Wil", "Bet", "Bam", "Peb"]
+
+
+
