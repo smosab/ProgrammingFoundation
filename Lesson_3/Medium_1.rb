@@ -118,11 +118,100 @@ A. To ensure that only whole numbers are passed into the array.
 
 Bonus 2
 
-What is the purpose of the second-to-last line in the method (the divisors before the method's end)?
+What is the purpose of the second-to-last line in the method (the divisors before the methods end)?
 
-To return the array.
+A. To return the array values.
+
+Question 6 - # Need help/better explanation for this.
+
+Alyssa was asked to write an implementation of a rolling buffer. Elements are added to the rolling buffer and if the buffer becomes full, then new elements that are added will displace the oldest elements in the buffer.
+
+She wrote two implementations saying, "Take your pick. Do you like << or + for modifying the buffer?". Is there a difference between the two, other than what operator she chose to use to add an element to the buffer?
+
+def rolling_buffer1(buffer, max_buffer_size, new_element)
+  buffer << new_element
+  buffer.shift if buffer.size >= max_buffer_size
+  buffer
+end
+
+def rolling_buffer2(input_array, max_buffer_size, new_element)
+  buffer = input_array + [new_element]
+  buffer.shift if buffer.size >= max_buffer_size
+  buffer
+end
+
+Solution 6
+
+In the second implementation, there is an extra variable, "input_array" and the "+" sign is mutating the buffer variable where as the "<<" sign in the first implementation does not mutate the caller. So the difference between the two is essentially in memeory allocation.
+
+
+Question 7
+
+limit = 15
+
+def fib(first_num, second_num)
+  while second_num < limit
+    sum = first_num + second_num
+    first_num = second_num
+    second_num = sum
+  end
+  sum
+end
+
+result = fib(0, 1)
+puts "result is #{result}"
+
+How would you fix this so that it works?
+
+Solution 7
+
+
+LIMIT = 15
+
+def fib(first_num, second_num)
+  while second_num < LIMIT
+    sum = first_num + second_num
+    first_num = second_num
+    second_num = sum
+  end
+  sum
+end
+
+result = fib(0, 1)
+puts "result is #{result}"
+
+OR
+
+def fib(first_num, second_num)
+  limit = 15
+  while second_num < limit
+    sum = first_num + second_num
+    first_num = second_num
+    second_num = sum
+  end
+  sum
+end
+
+result = fib(0, 1)
+puts "result is #{result}"
+
+Question 8
+
+Solution 8
+
+
+def titlesize!(title)
+  title.capitalize!
+  count = title.length
+  loop do
+  title[count].upcase
+  count -= 1
+  break if count == 0
+  end
+end
 
 
 
-
+title = "this is a title"
+titlesize!(title)
 
