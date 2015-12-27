@@ -215,3 +215,22 @@ end
 title = "this is a title"
 titlesize!(title)
 
+Question 9
+Modify the hash such that each member of the Munster family has an additional "age_group" key that has one of three values describing the age group the family member is in (kid, adult, or senior).
+
+Solution 9
+munsters.each do |k,v|
+case munsters[k]["age"]
+when (0..17)
+  munsters[k]["age-group"] = "kid"
+when (18..64)
+  munsters[k]["age-group"] = "adult"
+  else
+    if munsters[k]["age"] >= 65
+    munsters[k]["age-group"] = "senior"
+    end
+  end
+end
+
+
+
