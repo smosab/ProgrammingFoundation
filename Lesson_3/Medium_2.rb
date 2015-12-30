@@ -2,16 +2,7 @@ Medium_2
 
 Question 1
 
-munsters = {
-  "Herman" => { "age" => 32, "gender" => "male" },
-  "Lily" => { "age" => 30, "gender" => "female" },
-  "Grandpa" => { "age" => 402, "gender" => "male" },
-  "Eddie" => { "age" => 10, "gender" => "male" }
-}
-
-Figure out the total age of just the male members of the family.
-
-Solution 1
+Answer 1
 
 [52] pry(main)> total_age = 0
 => 0
@@ -23,34 +14,14 @@ Solution 1
 [54] pry(main)> total_age
 => 444
 
-Question 2
 
-
-Given this previously seen family hash, print out the name, age and gender of each family member:
-
-munsters = {
-  "Herman" => { "age" => 32, "gender" => "male" },
-  "Lily" => { "age" => 30, "gender" => "female" },
-  "Grandpa" => { "age" => 402, "gender" => "male" },
-  "Eddie" => { "age" => 10, "gender" => "male" },
-  "Marilyn" => { "age" => 23, "gender" => "female"}
-}
-...like this:
-
-(Name) is a (age) year old (male or female).
-
-Solution 2
+Answer 2
 
 munsters.each do |name, details|
   puts "#{name} is a #{details["age"]} year old #{details["gender"]}"
       end
 
-Question 3
-
-
-How can we refactor this exercise to make the result easier to predict and easier for the next programmer to maintain?
-
-Solution 3
+Answer 3
 
 def tricky_method(a_string_param, an_array_param)
   a_string_param << "rutabaga"
@@ -63,4 +34,33 @@ My string looks like this now: pumpkinsrutabaga
 [82] pry(main)> puts "My array looks like this now: #{my_array}"
 My array looks like this now: ["pumpkins", "rutabaga"]
 
+
+Answer 4
+
+[13] pry(main)> sentence.split.reverse.join(" ")
+=> "wall. a on sat Dumpty Humpty"
+
+Answer 5
+
+34
+
+Answer 6
+
+The mischief only mangled a local copy of the original hash because the hash variable "munsters" was not reassigned the new values as it was not referenced within the method itself.
+
+Answer 7
+
+rps(rps(rps("rock", "paper"), rps("rock", "scissors")), "rock")
+
+rps(rps(rps("rock", "paper"), "rock" ), "rock")
+
+rps(rps("paper", "rock" ), "rock")
+
+rps("paper", "rock")
+
+"paper"
+
+Answer 8
+
+"yes"
 
