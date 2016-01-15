@@ -11,10 +11,26 @@ def prompt(msg)
   puts "=> #{msg}"
 end
 
+system "clear"
+prompt "Welcome to Tic-Tac-Toe! First to 5 wins!"
+sleep(3)
+
+# def keep_player_score
+#   binding.pry
+#   player_score += 1
+# end
+
+# def keep_computer_score
+#   binding.pry
+#   computer_score += 1
+# end
+
+# binding.pry
 # rubocop:disable Metrics/AbcSize
-def display_board(brd)
+def display_board(brd, player_score, computer_score)
   system "clear"
   puts "You're an #{PLAYER_MARKER}, Computer is #{COMPUTER_MARKER}"
+  puts "Your score: #{player_score}, Computer's score: #{computer_score}"
   puts ""
   puts "     |     |"
   puts "  #{brd[1]}  |  #{brd[2]}  |  #{brd[3]}"
@@ -75,6 +91,7 @@ end
 
 def detect_winner(brd)
   WINNING_LINES.each do |line|
+
     # if    brd[line[0]] == PLAYER_MARKER &&
     #       brd[line[1]] == PLAYER_MARKER &&
     #       brd[line[2]] == PLAYER_MARKER
@@ -94,33 +111,61 @@ def detect_winner(brd)
       return "Computer"
     end
   end
+
+
   # false
   nil
 end
 
+
+
+
+player_score = 0
+computer_score = 0
+
 loop do
-  board = initialize_board
 
-  loop do
-    display_board(board)
+  round = 1
+    loop do
+      board = initialize_board
+      loop do
+        display_board(board, player_score, computer_score)
+        player_places_piece!(board)
+        break if someone_won?(board) || board_full?(board)
+        computer_places_piece!(board)
+        break if someone_won?(board) || board_full?(board)
+      end
 
-    player_places_piece!(board)
-    break if someone_won?(board) || board_full?(board)
 
-    computer_places_piece!(board)
-    break if someone_won?(board) || board_full?(board)
-  end
+      display_board(board, player_score, computer_score)
 
-  display_board(board)
 
-  if someone_won?(board)
-    prompt "#{detect_winner(board)} won!"
-  else
-    prompt "It's a tie!"
-  end
-
+      if someone_won?(board)
+        prompt "#{detect_winner(board)} wins round #{round}..."
+        sleep(1)
+        if detect_winner(board) == 'Computer'
+          computer_score += 1
+        else
+          player_score += 1
+        end
+      else
+        prompt "For round #{round} it's a tie!"
+        sleep(2)
+      end
+      if computer_score == 5
+        prompt "Computer won the game!"
+        sleep(2)
+      elsif player_score == 5
+        prompt "Player won the game!"
+        sleep(3)
+      end
+      display_board(board, player_score, computer_score)
+      break if computer_score == 5 || player_score == 5
+      round += 1
+    end
   prompt "Play again? (y or n)"
   answer = gets.chomp
   break unless answer.downcase.start_with? "y"
 end
+# prompt "Your score: #{player_score}, Computer's score: #{computer_score}"
 prompt "Thanks for playing Tic Tac Toe!"
