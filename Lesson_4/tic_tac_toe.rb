@@ -75,9 +75,9 @@ def player_places_piece!(brd)
   brd[square] = PLAYER_MARKER
 end
 
+# My Version
 def find_at_risk_square(line, board)
-  if board.values_at(*line).count(PLAYER_MARKER) == 2
-    binding.pry
+  if board.values_at(*line).count(PLAYER_MARKER) == 2 || board.values_at(*line).count(COMPUTER_MARKER) == 2
     board.select{|k,v| line.include?(k) && v == INITIAL_MARKER}.keys.first
   else
     nil
@@ -122,25 +122,10 @@ end
 
 def someone_won?(brd)
   !!detect_winner(brd)
-  # detect_winner(brd)
 end
 
 def detect_winner(brd)
   WINNING_LINES.each do |line|
-
-    # if    brd[line[0]] == PLAYER_MARKER &&
-    #       brd[line[1]] == PLAYER_MARKER &&
-    #       brd[line[2]] == PLAYER_MARKER
-    #   return 'Player'
-    # elsif brd[line[0]] == COMPUTER_MARKER &&
-    #       brd[line[1]] == COMPUTER_MARKER &&
-    #       brd[line[2]] == COMPUTER_MARKER
-    #   return 'Computer'
-    #  end
-    # binding.pry
-    # if brd.values_at(line[0], line[1], line[2]).count(PLAYER_MARKER) == 3
-    #   return "Player"
-    # elsif brd.values_at(line[0], line[1], line[2]).count(COMPUTER_MARKER) == 3
     if brd.values_at(*line).count(PLAYER_MARKER) == 3
       return "Player"
     elsif brd.values_at(*line).count(COMPUTER_MARKER) == 3
@@ -154,15 +139,12 @@ def detect_winner(brd)
 end
 
 
-
-
+loop do
 player_score = 0
 computer_score = 0
-
-loop do
-
-  round = 1
+round = 0
     loop do
+      round = 1
       board = initialize_board
       loop do
         display_board(board, player_score, computer_score)
