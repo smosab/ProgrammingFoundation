@@ -1,5 +1,7 @@
 require 'pry'
 
+WHO_GOES_FIRST = 'computer'
+
 WINNING_LINES = [[1, 2, 3], [4, 5, 6], [7, 8, 9]] + # rows
                 [[1, 4, 7], [2, 5, 8], [3, 6, 9]] + # columns
                 [[1, 5, 9], [3, 5, 7]]              # diagnals
@@ -75,9 +77,8 @@ def player_places_piece!(brd)
   brd[square] = PLAYER_MARKER
 end
 
-# My Version
-def find_at_risk_square(line, board)
-  if board.values_at(*line).count(PLAYER_MARKER) == 2 || board.values_at(*line).count(COMPUTER_MARKER) == 2
+def find_at_risk_square(line, board, marker)
+  if board.values_at(*line).count(marker) == 2
     board.select{|k,v| line.include?(k) && v == INITIAL_MARKER}.keys.first
   else
     nil
@@ -103,11 +104,27 @@ end
 
 def computer_places_piece!(brd)
   square = nil
+
+  # offense first
   WINNING_LINES.each do |line|
-    square = find_at_risk_square(line, brd)
+    square = find_at_risk_square(line, brd, COMPUTER_MARKER)
     break if square
   end
 
+  # defense
+  if !square
+    WINNING_LINES.each do |line|
+      square = find_at_risk_square(line, brd, PLAYER_MARKER)
+      break if square
+    end
+  end
+
+  # Pick square 5 first
+  if !square && brd[5] == " "
+    square = 5
+  end
+
+  # just pick a square
   if !square
     square = empty_squares(brd).sample
   end
@@ -133,7 +150,6 @@ def detect_winner(brd)
     end
   end
 
-
   # false
   nil
 end
@@ -142,9 +158,9 @@ end
 loop do
 player_score = 0
 computer_score = 0
-round = 0
+round = 1
+
     loop do
-      round = 1
       board = initialize_board
       loop do
         display_board(board, player_score, computer_score)
@@ -181,6 +197,7 @@ round = 0
       break if computer_score == 5 || player_score == 5
       round += 1
     end
+
   prompt "Play again? (y or n)"
   answer = gets.chomp
   break unless answer.downcase.start_with? "y"
