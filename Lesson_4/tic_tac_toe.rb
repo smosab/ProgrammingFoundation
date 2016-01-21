@@ -17,16 +17,6 @@ system "clear"
 prompt "Welcome to Tic-Tac-Toe! First to 5 wins!"
 sleep(3)
 
-# def keep_player_score
-#   binding.pry
-#   player_score += 1
-# end
-
-# def keep_computer_score
-#   binding.pry
-#   computer_score += 1
-# end
-
 # binding.pry
 # rubocop:disable Metrics/AbcSize
 def display_board(brd, player_score, computer_score)
@@ -160,7 +150,12 @@ player_score = 0
 computer_score = 0
 round = 1
 
+
+
     loop do
+
+    if WHO_GOES_FIRST == 'player'
+
       board = initialize_board
       loop do
         display_board(board, player_score, computer_score)
@@ -170,6 +165,21 @@ round = 1
         break if someone_won?(board) || board_full?(board)
       end
 
+    elsif WHO_GOES_FIRST == 'computer'
+
+
+       board = initialize_board
+
+      loop do
+        computer_places_piece!(board)
+        display_board(board, player_score, computer_score)
+        break if someone_won?(board) || board_full?(board)
+        player_places_piece!(board)
+        break if someone_won?(board) || board_full?(board)
+
+      end
+
+    end
 
       display_board(board, player_score, computer_score)
 
