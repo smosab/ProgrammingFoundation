@@ -5,6 +5,7 @@ WHO_GOES_FIRST = 'computer'
 WINNING_LINES = [[1, 2, 3], [4, 5, 6], [7, 8, 9]] + # rows
                 [[1, 4, 7], [2, 5, 8], [3, 6, 9]] + # columns
                 [[1, 5, 9], [3, 5, 7]]              # diagnals
+
 INITIAL_MARKER = ' '
 PLAYER_MARKER = 'X'
 COMPUTER_MARKER = 'O'
@@ -63,53 +64,44 @@ def player_places_piece!(brd)
     break if empty_squares(brd).include?(square)
     prompt "That's not a valid choice."
   end
-
   brd[square] = PLAYER_MARKER
 end
 
 def find_at_risk_square(line, board, marker)
   if board.values_at(*line).count(marker) == 2
-    board.select{|k,v| line.include?(k) && v == INITIAL_MARKER}.keys.first
+    board.select { |k, v| line.include?(k) && v == INITIAL_MARKER }.keys.first
   else
     nil
   end
 end
 
-## my version
-# def computer_places_piece!(brd)
-#   square = ""
-#   WINNING_LINES.each do |line|
-#     if brd.values_at(*line).count(PLAYER_MARKER) == 2 && brd.values_at(*line).include?(" ")
-#       binding.pry
-#         index_of_square_to_block = brd.values_at(*line).find_index(" ")
-#         square = line[index_of_square_to_block]
-#         break
-#       else
-#         square = empty_squares(brd).sample
-#     end
-#   end
-#   binding.pry
-#   brd[square] = COMPUTER_MARKER
-# end
-
-def computer_places_piece!(brd)
-  square = nil
-
-  # offense first
+def computer_offense(brd, square)
   WINNING_LINES.each do |line|
     square = find_at_risk_square(line, brd, COMPUTER_MARKER)
     break if square
   end
+  square
+end
+
+def computer_defense(brd, square)
+  WINNING_LINES.each do |line|
+    square = find_at_risk_square(line, brd, PLAYER_MARKER)
+    break if square
+  end
+  square
+end
+
+def computer_places_piece!(brd)
+  square = nil
+  # offense first
+  square = computer_offense(brd, square)
 
   # defense
   if !square
-    WINNING_LINES.each do |line|
-      square = find_at_risk_square(line, brd, PLAYER_MARKER)
-      break if square
-    end
+    square = computer_defense(brd, square)
   end
 
-  # Pick square 5 first
+  # Pick square 5 first on first go
   if !square && brd[5] == " "
     square = 5
   end
@@ -121,7 +113,6 @@ def computer_places_piece!(brd)
 
   brd[square] = COMPUTER_MARKER
 end
-
 
 def board_full?(brd)
   empty_squares(brd).empty?
@@ -139,75 +130,60 @@ def detect_winner(brd)
       return "Computer"
     end
   end
-
-  # false
   nil
 end
 
-
 loop do
-player_score = 0
-computer_score = 0
-round = 1
+  player_score = 0
+  computer_score = 0
+  round = 1
 
-
-
-    loop do
-
+  loop do
     if WHO_GOES_FIRST == 'player'
-
       board = initialize_board
       loop do
-        display_board(board, player_score, computer_score)
         player_places_piece!(board)
         break if someone_won?(board) || board_full?(board)
         computer_places_piece!(board)
         break if someone_won?(board) || board_full?(board)
       end
-
     elsif WHO_GOES_FIRST == 'computer'
-
-
-       board = initialize_board
-
+      board = initialize_board
       loop do
         computer_places_piece!(board)
         display_board(board, player_score, computer_score)
         break if someone_won?(board) || board_full?(board)
         player_places_piece!(board)
         break if someone_won?(board) || board_full?(board)
-
       end
-
     end
 
-      display_board(board, player_score, computer_score)
+    display_board(board, player_score, computer_score)
 
-
-      if someone_won?(board)
-        prompt "#{detect_winner(board)} wins round #{round}..."
-        sleep(1)
-        if detect_winner(board) == 'Computer'
-          computer_score += 1
-        else
-          player_score += 1
-        end
+    if someone_won?(board)
+      prompt "#{detect_winner(board)} wins round #{round}..."
+      sleep(1)
+      if detect_winner(board) == 'Computer'
+        computer_score += 1
       else
-        prompt "For round #{round} it's a tie!"
-        sleep(2)
+        player_score += 1
       end
-      if computer_score == 5
-        prompt "Computer won the game!"
-        sleep(2)
-      elsif player_score == 5
-        prompt "Player won the game!"
-        sleep(3)
-      end
-      display_board(board, player_score, computer_score)
-      break if computer_score == 5 || player_score == 5
-      round += 1
+    else
+      prompt "For round #{round} it's a tie!"
+      sleep(2)
     end
 
+    if computer_score == 5
+      prompt "Computer won the game!"
+      sleep(2)
+    elsif player_score == 5
+      prompt "Player won the game!"
+      sleep(3)
+    end
+    display_board(board, player_score, computer_score)
+    break if computer_score == 5 || player_score == 5
+    round += 1
+  end
   prompt "Play again? (y or n)"
   answer = gets.chomp
   break unless answer.downcase.start_with? "y"
