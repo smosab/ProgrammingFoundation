@@ -1,7 +1,5 @@
 require 'pry'
 
-WHO_GOES_FIRST = 'player' # choose player or computer to go first
-
 WINNING_LINES = [[1, 2, 3], [4, 5, 6], [7, 8, 9]] + # rows
                 [[1, 4, 7], [2, 5, 8], [3, 6, 9]] + # columns
                 [[1, 5, 9], [3, 5, 7]]              # diagnals
@@ -17,6 +15,9 @@ end
 system "clear"
 prompt "Welcome to Tic-Tac-Toe! First to 5 wins!"
 sleep(3)
+
+prompt "Who would like to go first? Please select 'a' for you the player or 'b' for the computer."
+who_goes_first = gets.chomp
 
 # rubocop:disable Metrics/AbcSize
 def display_board(brd, player_score, computer_score)
@@ -149,7 +150,7 @@ loop do
   loop do
     board = initialize_board
 
-    if WHO_GOES_FIRST == 'computer'
+    if who_goes_first.downcase == 'b'
       computer_places_piece!(board)
     end
 
