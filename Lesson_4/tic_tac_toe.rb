@@ -182,7 +182,6 @@ loop do
 
     break if game_winner(computer_score, player_score)
 
-    computer_score == 5 || player_score == 5
     round += 1
   end
   break unless play_again?.downcase.start_with? "y"
