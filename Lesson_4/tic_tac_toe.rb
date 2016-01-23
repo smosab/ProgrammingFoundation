@@ -1,6 +1,6 @@
 require 'pry'
 
-WHO_GOES_FIRST = 'computer'
+WHO_GOES_FIRST = 'player' # choose player or computer to go first
 
 WINNING_LINES = [[1, 2, 3], [4, 5, 6], [7, 8, 9]] + # rows
                 [[1, 4, 7], [2, 5, 8], [3, 6, 9]] + # columns
@@ -18,7 +18,6 @@ system "clear"
 prompt "Welcome to Tic-Tac-Toe! First to 5 wins!"
 sleep(3)
 
-# binding.pry
 # rubocop:disable Metrics/AbcSize
 def display_board(brd, player_score, computer_score)
   system "clear"
@@ -70,8 +69,6 @@ end
 def find_at_risk_square(line, board, marker)
   if board.values_at(*line).count(marker) == 2
     board.select { |k, v| line.include?(k) && v == INITIAL_MARKER }.keys.first
-  else
-    nil
   end
 end
 
@@ -92,14 +89,10 @@ def computer_defense(brd, square)
 end
 
 def computer_places_piece!(brd)
-  square = nil
   # offense first
   square = computer_offense(brd, square)
 
-  # defense
-  if !square
-    square = computer_defense(brd, square)
-  end
+  square = computer_defense(brd, square) unless square
 
   # Pick square 5 first on first go
   if !square && brd[5] == " "
@@ -133,29 +126,41 @@ def detect_winner(brd)
   nil
 end
 
+def play_again?
+  prompt "Play again? (y or n)"
+  gets.chomp
+end
+
+def game_winner(computer_score, player_score)
+  if computer_score == 5
+    prompt "Computer won the game!"
+    sleep(2)
+  elsif player_score == 5
+    prompt "Player won the game!"
+    sleep(3)
+  end
+end
+
 loop do
   player_score = 0
   computer_score = 0
   round = 1
 
   loop do
-    if WHO_GOES_FIRST == 'player'
-      board = initialize_board
-      loop do
-        player_places_piece!(board)
-        break if someone_won?(board) || board_full?(board)
-        computer_places_piece!(board)
-        break if someone_won?(board) || board_full?(board)
-      end
-    elsif WHO_GOES_FIRST == 'computer'
-      board = initialize_board
-      loop do
-        computer_places_piece!(board)
-        display_board(board, player_score, computer_score)
-        break if someone_won?(board) || board_full?(board)
-        player_places_piece!(board)
-        break if someone_won?(board) || board_full?(board)
-      end
+    board = initialize_board
+
+    if WHO_GOES_FIRST == 'computer'
+      computer_places_piece!(board)
+    end
+
+    loop do
+      display_board(board, player_score, computer_score)
+
+      player_places_piece!(board)
+      break if someone_won?(board) || board_full?(board)
+
+      computer_places_piece!(board)
+      break if someone_won?(board) || board_full?(board)
     end
 
     display_board(board, player_score, computer_score)
@@ -173,20 +178,13 @@ loop do
       sleep(2)
     end
 
-    if computer_score == 5
-      prompt "Computer won the game!"
-      sleep(2)
-    elsif player_score == 5
-      prompt "Player won the game!"
-      sleep(3)
-    end
     display_board(board, player_score, computer_score)
-    break if computer_score == 5 || player_score == 5
+
+    break if game_winner(computer_score, player_score)
+
+    computer_score == 5 || player_score == 5
     round += 1
   end
-  prompt "Play again? (y or n)"
-  answer = gets.chomp
-  break unless answer.downcase.start_with? "y"
+  break unless play_again?.downcase.start_with? "y"
 end
-# prompt "Your score: #{player_score}, Computer's score: #{computer_score}"
 prompt "Thanks for playing Tic Tac Toe!"
