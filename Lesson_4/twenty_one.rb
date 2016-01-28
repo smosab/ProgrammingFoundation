@@ -48,34 +48,70 @@ end
 
 
 def total(cards)
-  # cards = [['H', '3'], ['S', 'Q'], ... ]
+# My version
+#   values = cards.map { |card| card[1] }
 
+#   sum = 0
+
+#   if values.count("A") < 1
+#     values.each do |value|
+#       if value != 'A' && value.to_i == 0 # J, Q, K # && sum <= 10
+#         sum += 10
+#       elsif value == 'A' && sum <= 10
+#         sum += 11
+#       elsif value == 'A' && sum >10
+#         sum += 1
+#       else
+#         sum += value.to_i
+#       # # binding.pry
+#       end
+#     end
+#   else
+#     values.each do |value|
+#     if value == 'A'
+#     sum += 1
+#     elsif value != 'A' && value.to_i == 0 # J, Q, K # && sum <= 10
+#     sum += 10
+#     else
+#     sum += value.to_i
+#     end
+#   end
+# end
+#   sum
+
+    # cards = [['H', '3'], ['S', 'Q'], ... ]
   values = cards.map { |card| card[1] }
 
   sum = 0
-
   values.each do |value|
-    if value != 'A' && sum <= 10 && value.to_i == 0 # J, Q, K
-        sum += 10
-      elsif value == 'A' && sum <= 10
-          sum += 11
-        elsif value == 'A' && sum >10
-          sum += 1
-        else
-        sum += value.to_i
+    if value == "A"
+      sum += 11
+    elsif value.to_i == 0 # J, Q, K
+      sum += 10
+    else
+      sum += value.to_i
     end
+  end
+
+  # correct for Aces
+  values.select { |value| value == "A" }.count.times do
+    sum -= 10 if sum > 21
   end
 
   sum
 end
 
-def value_of_players_cards(players_cards)
-  total(players_cards)
-end
+# def value_of_players_cards(players_cards)
+#   total(players_cards)
+# end
 
-def display_cards(players_cards, dealers_cards)
-prompt "players cards: #{players_cards}. Total value of cards: #{value_of_players_cards(players_cards)}"
-prompt "dealers cards: #{dealers_cards[0]}."
+def display_cards(players_cards, dealers_cards, turn = 0)
+# system "clear"
+# binding.pry
+total_of_players_cards = total(players_cards)
+prompt "players cards: #{players_cards} Total value of cards: #{total_of_players_cards}"
+prompt "dealers cards: #{dealers_cards[turn]}"
+# # binding.pry
 end
 
 def initialize_player_cards(players_cards, deck)
@@ -86,10 +122,13 @@ def initialize_dealer_cards(dealers_cards, deck)
   dealers_cards = deck.sample(2)
 end
 
-def busted?(players_cards)
-  total(players_cards) > 21
+def busted?(cards)
+  total(cards) > 21
 end
 
+def dealer_plays(dealers_cards, deck)
+  dealers_cards << deck.sample
+end
 
 
 # Player turn
@@ -101,35 +140,59 @@ loop do
     display_cards(players_cards, dealers_cards)
     puts "hit or stay?"
     answer = gets.chomp
-    players_cards << deck.sample
-    break if answer == 'stay' || busted?(players_cards)   # the busted? method is not shown
+    if answer == 'hit'
+      players_cards << deck.sample
+      else break
+    end
+    break if busted?(players_cards)
+    #  answer == 'stay' ||    # the busted? method is not shown
+
+
     # binding.pry
-    value_of_players_cards(players_cards)
+    # display_cards(players_cards, dealers_cards)
 end
 
 if busted?(players_cards)
   # probably end the game? or ask the user to play again?
   prompt "You busted!"
+  sleep (2)
   else
   puts "You chose to stay!"  # if player didn't bust, must have stayed to get here
+  sleep(2)
+# # binding.pry
 end
 
 # ... continue on to Dealer turn
 # hit until the total is at least 17
-loop do
-  display_cards(players_cards, dealers_cards)
-  break unless total(dealers_cards) >= 17 #undefined local variable or method `cards' for main:Object (NameError)
+prompt "Dealers turn!"
+sleep(2)
 
+turn = 0
+loop do
+
+  display_cards(players_cards, dealers_cards, turn)
+  break unless total(dealers_cards) <= 17
+  prompt "Dealer hits!"
+  sleep(2)
+  dealer_plays(dealers_cards, deck)
+  prompt "The total of the dealers cards is #{total(dealers_cards)}"
+        # # binding.pry
+  turn +=1
   break if busted?(dealers_cards)
 end
+
 
 if busted?(dealers_cards)
   # probably end the game? or ask the user to play again?
   prompt "Dealer busted!"
-else  prompt "Dealer stays"
+  sleep(2)
+else
+  prompt "Dealer stays."
 end
+display_cards(players_cards, dealers_cards)
+prompt "The total of the dealers cards is #{total(dealers_cards)}"
 
-determine the winner
-display_result
+# determine the winner
+# display_result
 
 
