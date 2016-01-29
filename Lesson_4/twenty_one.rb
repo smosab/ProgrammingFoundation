@@ -21,65 +21,38 @@ def prompt(msg)
   puts "=> #{msg}"
 end
 
-prompt("Welcome to Twenty-One!")
+SUITS = ["H", "D","S","C"]
+RANKS = ('2'..'10').to_a + %w(J Q K A)
 
-# suit_hearts = [['H', '2'], ['H', '3'], ['H', '4'], ['H', '5'], ['H', '6'], ['H', '7'], ['H', '8'], ['H', '9'], ['H', '10'], ['H', 'K'], ['H', 'Q'], ['H', 'J'], ['H', 'A']]
-
-# suit_spade = [['S', '2'], ['S', '3'], ['S', '4'], ['S', '5'], ['S', '6'], ['S', '7'], ['S', '8'], ['S', '9'], ['S', '10'], ['S', 'K'], ['S', 'Q'], ['S', 'J'], ['S', 'A']]
-
-# suit_club = [['C', '2'], ['C', '3'], ['C', '4'], ['C', '5'], ['C', '6'], ['C', '7'], ['C', '8'], ['C', '9'], ['C', '10'], ['C', 'K'], ['C', 'Q'], ['C', 'J'], ['C', 'A']]
-
-# suit_diamond = [['D', '2'], ['D', '3'], ['D', '4'], ['D', '5'], ['D', '6'], ['D', '7'], ['D', '8'], ['D', '9'], ['D', '10'], ['D', 'K'], ['D', 'Q'], ['D', 'J'], ['D', 'A']]
-
-deck = [['H', '2'], ['H', '3'], ['H', '4'], ['H', '5'], ['H', '6'], ['H', '7'], ['H', '8'], ['H', '9'], ['H', '10'], ['H', 'K'], ['H', 'Q'], ['H', 'J'], ['H', 'A'],['S', '2'], ['S', '3'], ['S', '4'], ['S', '5'], ['S', '6'], ['S', '7'], ['S', '8'], ['S', '9'], ['S', '10'], ['S', 'K'], ['S', 'Q'], ['S', 'J'], ['S', 'A'],['C', '2'], ['C', '3'], ['C', '4'], ['C', '5'], ['C', '6'], ['C', '7'], ['C', '8'], ['C', '9'], ['C', '10'], ['C', 'K'], ['C', 'Q'], ['C', 'J'], ['C', 'A'],['D', '2'], ['D', '3'], ['D', '4'], ['D', '5'], ['D', '6'], ['D', '7'], ['D', '8'], ['D', '9'], ['D', '10'], ['D', 'K'], ['D', 'Q'], ['D', 'J'], ['D', 'A']]
-
-players_cards = []
-
-dealers_cards =  []
-
-
-def return_game_result
-
+def initialize_deck
+  SUITS.product(RANKS).shuffle
 end
 
-def display_result
 
+# players_cards = initialize_player_cards(players_cards, deck)
+# dealers_cards = initialize_dealer_cards(dealers_cards, deck)
+
+def deal_cards(players_cards, dealers_cards, deck)
+  2.times do
+    players_cards << deck.pop
+    dealers_cards << deck.pop
+  end
 end
 
+def whoiswinner?(dealers_cards, players_cards)
+  if busted?(players_cards) and !busted?(dealers_cards)
+  "dealer"
+  elsif busted?(dealers_cards) and !busted?(players_cards)
+    "player"
+  elsif total(players_cards) > total(dealers_cards)
+    "player"
+  else
+    "dealer"
+  end
+end
 
 def total(cards)
-# My version
-#   values = cards.map { |card| card[1] }
-
-#   sum = 0
-
-#   if values.count("A") < 1
-#     values.each do |value|
-#       if value != 'A' && value.to_i == 0 # J, Q, K # && sum <= 10
-#         sum += 10
-#       elsif value == 'A' && sum <= 10
-#         sum += 11
-#       elsif value == 'A' && sum >10
-#         sum += 1
-#       else
-#         sum += value.to_i
-#       # # binding.pry
-#       end
-#     end
-#   else
-#     values.each do |value|
-#     if value == 'A'
-#     sum += 1
-#     elsif value != 'A' && value.to_i == 0 # J, Q, K # && sum <= 10
-#     sum += 10
-#     else
-#     sum += value.to_i
-#     end
-#   end
-# end
-#   sum
-
-    # cards = [['H', '3'], ['S', 'Q'], ... ]
+  # cards = [['H', '3'], ['S', 'Q'], ... ]
   values = cards.map { |card| card[1] }
 
   sum = 0
@@ -101,58 +74,48 @@ def total(cards)
   sum
 end
 
-# def value_of_players_cards(players_cards)
-#   total(players_cards)
-# end
 
-def display_cards(players_cards, dealers_cards, turn = 0)
-# system "clear"
+def display_opening_cards(players_cards, dealers_cards)
+system "clear"
 # binding.pry
-total_of_players_cards = total(players_cards)
-prompt "players cards: #{players_cards} Total value of cards: #{total_of_players_cards}"
-prompt "dealers cards: #{dealers_cards[turn]}"
-# # binding.pry
+prompt "Welcome to Twenty-One!"
+sleep(1)
+prompt "Dealing cards..."
+sleep(2)
+prompt "Players cards: #{players_cards} Total value of cards: #{total(players_cards)}"
+prompt "Dealers cards: #{dealers_cards[0]}, [?,?]}"
+
 end
 
-def initialize_player_cards(players_cards, deck)
-  players_cards = deck.sample(2)
-end
-
-def initialize_dealer_cards(dealers_cards, deck)
-  dealers_cards = deck.sample(2)
+def display_score(players_cards, dealers_cards)
+  prompt "players cards: #{players_cards} Total value of cards: #{total(players_cards)}"
+  prompt "dealers cards: #{dealers_cards} Total value of cards: #{total(dealers_cards)}"
 end
 
 def busted?(cards)
   total(cards) > 21
 end
 
-def dealer_plays(dealers_cards, deck)
-  dealers_cards << deck.sample
+def dealer_hits(dealers_cards, deck)
+  dealers_cards << deck.pop
 end
 
-
-# Player turn
-answer = nil
-players_cards = initialize_player_cards(players_cards, deck)
-dealers_cards = initialize_dealer_cards(dealers_cards, deck)
-
-loop do
-    display_cards(players_cards, dealers_cards)
-    puts "hit or stay?"
-    answer = gets.chomp
-    if answer == 'hit'
-      players_cards << deck.sample
-      else break
-    end
-    break if busted?(players_cards)
-    #  answer == 'stay' ||    # the busted? method is not shown
-
-
-    # binding.pry
-    # display_cards(players_cards, dealers_cards)
+def player_hits(players_cards, deck)
+  players_cards << deck.pop
 end
 
-if busted?(players_cards)
+def players_turn(players_cards, deck)
+  loop do
+  puts "hit or stay?"
+  answer = gets.chomp
+  if answer == 'hit'
+    player_hits(players_cards, deck)
+    else break
+  end
+  break if busted?(players_cards)
+  end
+
+  if busted?(players_cards)
   # probably end the game? or ask the user to play again?
   prompt "You busted!"
   sleep (2)
@@ -160,39 +123,60 @@ if busted?(players_cards)
   puts "You chose to stay!"  # if player didn't bust, must have stayed to get here
   sleep(2)
 # # binding.pry
+  end
 end
 
-# ... continue on to Dealer turn
-# hit until the total is at least 17
-prompt "Dealers turn!"
-sleep(2)
+def dealers_turn(dealers_cards, deck)
+  # hit until the total is at least 17
+  prompt "Dealers turn!"
+  sleep(2)
+  loop do
 
-turn = 0
+    break unless total(dealers_cards) <= 17
+    prompt "Dealer hits!"
+    sleep(2)
+    dealer_hits(dealers_cards, deck)
+    prompt "The total of the dealers cards is #{total(dealers_cards)}"
+          # # binding.pry
+    break if busted?(dealers_cards)
+    end
+
+    if busted?(dealers_cards)
+    # probably end the game? or ask the user to play again?
+    prompt "Dealer busted!"
+    sleep(2)
+    else
+    prompt "Dealer stays."
+  end
+end
+
+def playagain?
+  prompt "Would you like to play again (y/n)?"
+  answer = gets.chomp
+end
+
+answer = nil
+
+players_cards = []
+dealers_cards = []
+
 loop do
 
-  display_cards(players_cards, dealers_cards, turn)
-  break unless total(dealers_cards) <= 17
-  prompt "Dealer hits!"
-  sleep(2)
-  dealer_plays(dealers_cards, deck)
-  prompt "The total of the dealers cards is #{total(dealers_cards)}"
-        # # binding.pry
-  turn +=1
-  break if busted?(dealers_cards)
+  deck = initialize_deck
+
+  deal_cards(players_cards, dealers_cards, deck)
+
+  display_opening_cards(players_cards, dealers_cards)
+
+  players_turn(players_cards, deck)
+
+  # ... continue on to Dealer turn
+  dealers_turn(dealers_cards, deck)
+
+  display_score(players_cards, dealers_cards)
+  prompt "#{whoiswinner?(dealers_cards, players_cards)} wins!"
+  break if playagain? == 'n'
+  prompt "Thanks for playing!"
+
 end
-
-
-if busted?(dealers_cards)
-  # probably end the game? or ask the user to play again?
-  prompt "Dealer busted!"
-  sleep(2)
-else
-  prompt "Dealer stays."
-end
-display_cards(players_cards, dealers_cards)
-prompt "The total of the dealers cards is #{total(dealers_cards)}"
-
-# determine the winner
-# display_result
-
 
