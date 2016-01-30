@@ -124,11 +124,14 @@ def dealers_turn(dealers_cards, players_cards, deck)
 end
 
 def whoiswinner?(players_cards, dealers_cards)
-  if !busted?(players_cards) && total(players_cards) > total(dealers_cards)
+  total_of_players_cards = total(players_cards)
+  total_of_dealers_cards = total(dealers_cards)
+
+  if !busted?(players_cards) && total_of_players_cards > total_of_dealers_cards
     prompt "You win!"
-  elsif !busted?(dealers_cards) && total(dealers_cards) > total(players_cards)
+  elsif !busted?(dealers_cards) && total_of_dealers_cards > total_of_players_cards
     prompt "Dealer wins!"
-  elsif total(players_cards) == total(dealers_cards)
+  elsif total_of_players_cards == total_of_dealers_cards
     prompt "It's a push(draw)!"
   end
 end
