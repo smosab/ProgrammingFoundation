@@ -35,7 +35,6 @@ def total(cards)
   end
 
   # correct for Aces
-  # values.select { |value| value == "A" }.count.times do
   values.count { |value| value == "A" }.times do
     sum -= 10 if sum > 21
   end
@@ -117,11 +116,6 @@ def dealers_turn(dealers_cards, players_cards, deck)
   end
 end
 
-# def dealers_turn(dealers_cards, players_cards, deck)
-
-
-#   dealers_turn(dealers_cards, players_cards, deck)
-# end
 
 def who_is_winner(players_cards, dealers_cards)
   total_of_players_cards = total(players_cards)
