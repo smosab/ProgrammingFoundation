@@ -4,7 +4,8 @@ def prompt(msg)
   puts "=> #{msg}"
 end
 
-SUITS = ["H", "D", "S", "C"]
+# SUITS = ["H", "D", "S", "C"]
+SUITS = ["\u{2660}", "\u{2665}", "\u{2666}", "\u{2663}"]
 RANKS = ('2'..'10').to_a + %w(J Q K A)
 
 def initialize_deck
@@ -45,14 +46,14 @@ end
 def display_opening_cards(players_cards, dealers_cards)
   prompt "Dealing cards..."
   sleep(2)
-  prompt "Your cards: #{players_cards} Total value of cards: #{total(players_cards)}"
-  prompt "Dealers cards: #{dealers_cards[0]}, [?,?]}"
+  prompt "Your cards: #{players_cards[0].join} | #{players_cards[1].join} (total value: #{total(players_cards)})"
+  prompt "Dealers cards: #{dealers_cards[0].join} | \u{1F0A0}"
 end
 
 def display_score(players_cards, dealers_cards)
   system "clear"
-  prompt "Your cards: #{players_cards} Total value of cards: #{total(players_cards)}"
-  prompt "Dealers cards: #{dealers_cards} Total value of cards: #{total(dealers_cards)}"
+  prompt "Your cards: #{players_cards[0].join} | #{players_cards[1].join} (total value: #{total(players_cards)})"
+  prompt "Dealers cards: #{dealers_cards[0].join} | #{dealers_cards[1].join}  (total value: #{total(dealers_cards)})"
 end
 
 def busted?(cards)
@@ -67,20 +68,18 @@ def player_hits(players_cards, deck)
   players_cards << deck.pop
 end
 
-def hit_or_stay?
-  answer = ''
+def hit_or_stay
   loop do
     prompt "(h)it or (s)tay?"
     answer = gets.chomp.downcase
-    break if ["h", "s"].include?(answer)
+    break(answer) if ["h", "s"].include?(answer)
     prompt "Please enter 'h' or 's'"
   end
-  answer
 end
 
 def players_turn(players_cards, dealers_cards, deck)
   loop do
-    if hit_or_stay? == 'h'
+    if hit_or_stay == 'h'
       player_hits(players_cards, deck)
       display_score(players_cards, dealers_cards)
     else break
@@ -97,7 +96,9 @@ def players_turn(players_cards, dealers_cards, deck)
   end
 end
 
-def dealer_hits_or_stays(dealers_cards, players_cards, deck)
+def dealers_turn(dealers_cards, players_cards, deck)
+    prompt "Dealers turn!"
+    sleep(2)
   loop do
     break unless total(dealers_cards) <= 17
     prompt "Dealer hits!"
@@ -116,14 +117,13 @@ def dealer_hits_or_stays(dealers_cards, players_cards, deck)
   end
 end
 
-def dealers_turn(dealers_cards, players_cards, deck)
-  prompt "Dealers turn!"
-  sleep(2)
+# def dealers_turn(dealers_cards, players_cards, deck)
 
-  dealer_hits_or_stays(dealers_cards, players_cards, deck)
-end
 
-def whoiswinner?(players_cards, dealers_cards)
+#   dealers_turn(dealers_cards, players_cards, deck)
+# end
+
+def who_is_winner(players_cards, dealers_cards)
   total_of_players_cards = total(players_cards)
   total_of_dealers_cards = total(dealers_cards)
 
@@ -136,18 +136,18 @@ def whoiswinner?(players_cards, dealers_cards)
   end
 end
 
-def playagain?
+def play_again?
   prompt "Would you like to play again (y/n)?"
   gets.chomp.downcase.start_with?('y')
 end
 
-def welcomemsg
+def welcome_msg
   system 'clear'
   prompt "Welcome to Twenty-One!"
   sleep(1)
 end
 
-welcomemsg
+welcome_msg
 loop do
   players_cards = []
   dealers_cards = []
@@ -160,13 +160,11 @@ loop do
 
   players_turn(players_cards, dealers_cards, deck)
 
-  if !busted?(players_cards)
-    dealers_turn(dealers_cards, players_cards, deck)
-  end
+  dealers_turn(dealers_cards, players_cards, deck) unless busted?(players_cards)
 
-  whoiswinner?(players_cards, dealers_cards)
+  who_is_winner(players_cards, dealers_cards)
 
-  break unless playagain?
+  break unless play_again?
 end
 
 prompt "Thanks for playing!"
